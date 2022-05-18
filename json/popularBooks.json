@@ -1,0 +1,23 @@
+[
+    {
+        "rating": "4.5",
+        "title": "TAYLOR SWIFT",
+        "text": "Martin Hyatt",
+        "img": "images/taylor-swift.jpg",
+        "audio": "Voices.mp3"
+    },
+    {
+        "rating": "4.6",
+        "title": "LiLY COLLINS",
+        "text": "Hazard Bin",
+        "img": "images/lily-collins.jpg",
+        "audio": "Voices.mp3"
+    },
+    {
+        "rating": "4.7",
+        "title": "BILLIE EILISH",
+        "text": "Martin Hyatt",
+        "img": "images/billie-eilish.jpg",
+        "audio": "Voices.mp3"
+    }
+]
