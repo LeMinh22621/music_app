@@ -1,0 +1,37 @@
+[
+    {
+        "rating": "4.5",
+        "title": "Unit 1",
+        "text": "Martin Hyatt",
+        "img": "images/pic-4.jpg",
+        "audio": "Voices.mp3"
+    },
+    {
+        "rating": "4.5",
+        "title": "Unit 2",
+        "text": "Martin Hyatt",
+        "img": "images/pic-5.jpg",
+        "audio": "Voices.mp3"
+    },
+    {
+        "rating": "4.5",
+        "title": "Unit 3",
+        "text": "Martin Hyatt",
+        "img": "images/pic-6.jpg",
+        "audio": "Voices.mp3"
+    },
+    {
+        "rating": "4.5",
+        "title": "Unit 4",
+        "text": "Martin Hyatt",
+        "img": "images/pic-7.jpg",
+        "audio": "Voices.mp3"
+    },
+    {
+        "rating": "4.5",
+        "title": "Unit 5",
+        "text": "Martin Hyatt",
+        "img": "images/pic-8.jpg",
+        "audio": "Voices.mp3"
+    }
+]
