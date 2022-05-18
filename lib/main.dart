@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'app_colors.dart' as AppColors;
 
@@ -28,6 +30,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List? popularBooks;
+  ReadData() async {
+    await DefaultAssetBundle.of(context)
+        .loadString("json/popularBooks.json")
+        .then((s) {
+      setState(() {
+        popularBooks = json.decode(s);
+      });
+    });
+  }
+
+  void initState() {
+    super.initState();
+    ReadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,7 +74,54 @@ class _MyHomePageState extends State<MyHomePage> {
                     ]),
                   ],
                 ),
-              )
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 20),
+                    child: const Text(
+                      "Popular Books",
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
+                height: 180,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      left: -28,
+                      right: 0,
+                      child: Container(
+                        height: 180,
+                        child: PageView.builder(
+                            controller: PageController(viewportFraction: 0.79),
+                            itemCount:
+                                popularBooks == null ? 0 : popularBooks?.length,
+                            itemBuilder: (_, i) {
+                              return Container(
+                                margin:
+                                    const EdgeInsets.only(left: 6, right: 6),
+                                height: 180,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  image: DecorationImage(
+                                    image: AssetImage(popularBooks![i]["img"]),
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
