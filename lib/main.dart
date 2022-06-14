@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:music_app/view/screens/detail_screen.dart';
 import 'package:music_app/view/screens/home_screen.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(title: 'Flutter Demo Home Page'),
+      home: DetailAudioPage(),//const HomeScreen(title: 'Flutter Demo Home Page'),
     );
   }
 }
