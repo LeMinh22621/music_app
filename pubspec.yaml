@@ -37,6 +37,9 @@ dependencies:
   http: ^0.13.4
   mvvm: ^0.5.2
   audioplayers: ^0.20.1
+  firebase_core: ^1.18.0
+  firebase_storage: ^10.2.18
+  cloud_firestore: ^3.1.18
 
 dev_dependencies:
   flutter_test:

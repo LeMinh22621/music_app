@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1085913126533",
+    "project_id": "music-app-708b7",
+    "storage_bucket": "music-app-708b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085913126533:android:e09bcd5160b15155763bec",
+        "android_client_info": {
+          "package_name": "com.example.music_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085913126533-eeq9mq9a06hkribguet0fjoo6tabggjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfdM9vOjz31dfOb4z64lVqcIUpvJ4zmws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085913126533-eeq9mq9a06hkribguet0fjoo6tabggjo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1085913126533-l6m8022nq04snl4l21251sdeovb7fpia.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.musicApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

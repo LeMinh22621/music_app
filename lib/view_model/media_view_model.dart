@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:music_app/model/api/api_response.dart';
 import 'package:music_app/model/media.dart';
 import 'package:music_app/model/media_respository.dart';
+import 'package:music_app/model/song.dart';
+import 'package:music_app/model/song_repository.dart';
 
 class MediaViewModel with ChangeNotifier {
   ApiResponse _apiResponse = ApiResponse.initial('Empty data');
@@ -33,5 +37,22 @@ class MediaViewModel with ChangeNotifier {
   void setSelectedMedia(Media? media) {
     _media = media;
     notifyListeners();
+  }
+
+  List<Song> getAllSong() {
+    List<Song> _l = [];
+
+    SongRespository.getAllSong().elementAt(0).then(
+      (value) {
+        List<Song> _songs = [];
+        _songs.addAll(value.map((e) => e));
+        _l = _songs;
+        print("songs: = " + _songs.length.toString());
+      },
+    );
+
+    print("l: = " + _l.length.toString());
+
+    return _l;
   }
 }
