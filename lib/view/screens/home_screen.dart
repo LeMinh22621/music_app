@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   List populars = [];
-  List books = [];
+  List album = [];
   late TabController _tabController;
   late ScrollController _scrollController;
 
@@ -33,10 +33,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   ReadBooks() async {
     await DefaultAssetBundle.of(context)
-        .loadString("json/books.json")
+        .loadString("json/album.json")
         .then((s) {
       setState(() {
-        books = json.decode(s);
+        album = json.decode(s);
       });
     });
   }
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildPopularPageView() {
     return PageView.builder(
         controller: PageController(viewportFraction: 0.79),
-        itemCount: populars.isEmpty ? 0 : populars.length,
+        itemCount: album.isEmpty ? 0 : album.length,
         itemBuilder: (_, i) {
           return Container(
             margin: const EdgeInsets.only(left: 6, right: 6),
@@ -63,12 +63,108 @@ class _HomeScreenState extends State<HomeScreen>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               image: DecorationImage(
-                image: NetworkImage(populars[i].img!),
+                image: AssetImage(album[i]['img']),
                 fit: BoxFit.cover,
               ),
             ),
           );
         });
+  }
+
+  Widget _buildListView(List<dynamic> listSongs) {
+    return ListView.builder(
+      itemCount: listSongs.isEmpty ? 0 : listSongs.length,
+      itemBuilder: (_, i) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const DetailAudioPage(),
+              ),
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: 10,
+              bottom: 10,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.tabVarViewColor,
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 2,
+                      offset: Offset(0, 0),
+                      color: Colors.grey.withOpacity(0.2),
+                    ),
+                  ]),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 90,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: NetworkImage(listSongs[i].img!),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          populars[i].title!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontFamily: "Avenir",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          populars[i].artist!,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: "Avenir",
+                            color: AppColors.subTitleText,
+                          ),
+                        ),
+                        Container(
+                          width: 60,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: AppColors.loveColor,
+                          ),
+                          child: const Text(
+                            "Love",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                                fontFamily: "Avenir"),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -106,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen>
                   Container(
                     margin: const EdgeInsets.only(left: 20),
                     child: const Text(
-                      "Popular Music",
+                      "Popular Album",
                       style: TextStyle(
                         fontSize: 30,
                       ),
@@ -159,7 +255,9 @@ class _HomeScreenState extends State<HomeScreen>
                               ),
                               tabs: [
                                 AppTabs(
-                                    color: AppColors.menu1Color, text: "New"),
+                                  color: AppColors.menu1Color,
+                                  text: "New",
+                                ),
                                 AppTabs(
                                     color: AppColors.menu2Color,
                                     text: "Popular"),
@@ -176,119 +274,9 @@ class _HomeScreenState extends State<HomeScreen>
                   body: TabBarView(
                     controller: _tabController,
                     children: [
-                      ListView.builder(
-                        itemCount: populars == null ? 0 : populars.length,
-                        itemBuilder: (_, i) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const DetailAudioPage(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(
-                                left: 20,
-                                right: 20,
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: AppColors.tabVarViewColor,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 2,
-                                        offset: Offset(0, 0),
-                                        color: Colors.grey.withOpacity(0.2),
-                                      ),
-                                    ]),
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 90,
-                                        height: 120,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                            image:
-                                                NetworkImage(populars[i].img!),
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            populars[i].title!,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontFamily: "Avenir",
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            populars[i].artist!,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: "Avenir",
-                                              color: AppColors.subTitleText,
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 60,
-                                            height: 15,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(3),
-                                              color: AppColors.loveColor,
-                                            ),
-                                            child: const Text(
-                                              "Love",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.white,
-                                                  fontFamily: "Avenir"),
-                                            ),
-                                            alignment: Alignment.center,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      Material(
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.grey,
-                          ),
-                          title: Text("Content"),
-                        ),
-                      ),
-                      Material(
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.grey,
-                          ),
-                          title: Text("Content"),
-                        ),
-                      ),
+                      _buildListView(populars),
+                      _buildListView(populars),
+                      _buildListView(populars),
                     ],
                   ),
                 ),
