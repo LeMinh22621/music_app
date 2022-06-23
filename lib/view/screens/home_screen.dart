@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/model/song.dart';
 import 'package:music_app/view/screens/detail_screen.dart';
 import 'package:music_app/view/widgets/my_tabs.dart';
 import 'package:music_app/view/widgets/app_colors.dart' as AppColors;
 import 'dart:convert';
+
+import 'package:music_app/view_model/media_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key, required this.title}) : super(key: key);
@@ -14,17 +18,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  List? popularBooks;
-  List? books;
+  List populars = [];
+  List books = [];
   late TabController _tabController;
   late ScrollController _scrollController;
 
-  ReadData() async {
-    await DefaultAssetBundle.of(context)
-        .loadString("json/popularBooks.json")
-        .then((s) {
+  ReadPopular() async {
+    await (MediaViewModel().loadAllSong()).then((value) {
       setState(() {
-        popularBooks = json.decode(s);
+        populars = value;
       });
     });
   }
@@ -39,14 +41,34 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
+  @override
   void initState() {
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
     _scrollController = ScrollController();
 
-    ReadData();
+    ReadPopular();
     ReadBooks();
+  }
+
+  Widget _buildPopularPageView() {
+    return PageView.builder(
+        controller: PageController(viewportFraction: 0.79),
+        itemCount: populars.isEmpty ? 0 : populars.length,
+        itemBuilder: (_, i) {
+          return Container(
+            margin: const EdgeInsets.only(left: 6, right: 6),
+            height: 180,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              image: DecorationImage(
+                image: NetworkImage(populars[i].img!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -103,23 +125,7 @@ class _HomeScreenState extends State<HomeScreen>
                       right: 0,
                       child: Container(
                         height: 180,
-                        child: PageView.builder(
-                            controller: PageController(viewportFraction: 0.79),
-                            itemCount:
-                                popularBooks == null ? 0 : popularBooks?.length,
-                            itemBuilder: (_, i) {
-                              return Container(
-                                margin:
-                                    const EdgeInsets.only(left: 6, right: 6),
-                                height: 180,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  image: DecorationImage(
-                                    image: AssetImage(popularBooks![i]["img"]),
-                                  ),
-                                ),
-                              );
-                            }),
+                        child: _buildPopularPageView(),
                       ),
                     ),
                   ],
@@ -171,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen>
                     controller: _tabController,
                     children: [
                       ListView.builder(
-                        itemCount: books == null ? 0 : books?.length,
+                        itemCount: populars == null ? 0 : populars.length,
                         itemBuilder: (_, i) {
                           return GestureDetector(
                             onTap: () {
@@ -211,7 +217,8 @@ class _HomeScreenState extends State<HomeScreen>
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           image: DecorationImage(
-                                            image: AssetImage(books![i]["img"]),
+                                            image:
+                                                NetworkImage(populars[i].img!),
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -223,24 +230,8 @@ class _HomeScreenState extends State<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.star,
-                                                size: 24,
-                                                color: AppColors.starColor,
-                                              ),
-                                              const SizedBox(width: 5),
-                                              Text(
-                                                books![i]["rating"],
-                                                style: TextStyle(
-                                                    color:
-                                                        AppColors.menu2Color),
-                                              ),
-                                            ],
-                                          ),
                                           Text(
-                                            books![i]["title"],
+                                            populars[i].title!,
                                             style: const TextStyle(
                                               fontSize: 16,
                                               fontFamily: "Avenir",
@@ -248,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen>
                                             ),
                                           ),
                                           Text(
-                                            books![i]["text"],
+                                            populars[i].artist!,
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontFamily: "Avenir",

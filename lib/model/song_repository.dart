@@ -5,16 +5,15 @@ import 'package:music_app/model/song.dart';
 class SongRespository {
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  static Stream<List<Song>> getAllSong() {
-    return FirebaseFirestore.instance
-        .collection('music')
-        .snapshots()
-        .map((event) {
-      List<Song> _songs = [];
-      event.docs.forEach((element) {
-        _songs.add(Song.fromMap(element.data()));
-      });
-      return _songs.reversed.toList();
-    });
+  static Future<List<Song>> getAllSong() async {
+    var collection = FirebaseFirestore.instance.collection('music');
+    var querySnapshot = await collection.get();
+    List<Song> listSong = [];
+    for (var queryDocumentSnapShot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapShot.data();
+      listSong.add(Song.fromMap(data));
+    }
+
+    return listSong;
   }
 }

@@ -12,9 +12,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  List<Song> l = MediaViewModel().getAllSong();
-
-  runApp(TestApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,25 +25,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const HomeScreen(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class TestApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Test Firebase',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        body: Column(
-          children: const [
-            Center(child: Text("---------------")),
-          ],
-        ),
-      ),
     );
   }
 }
