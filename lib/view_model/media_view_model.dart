@@ -16,4 +16,8 @@ class MediaViewModel with ChangeNotifier {
   Future<List<Song>> loadAllSong() async {
     return await SongRespository.getAllSong();
   }
+
+  Future<List<Song>> loadTrend() async {
+    return await SongRespository.getTrend();
+  }
 }

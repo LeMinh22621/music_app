@@ -13,9 +13,9 @@ class AudioFile extends StatefulWidget {
 
 class _AudioFileState extends State<AudioFile> {
   _AudioFileState({required this.path});
-
+  late double speed = 1;
   Duration _duration = new Duration();
-  int da = 1000;
+  int seconds = 1000;
   Duration _position = new Duration();
   final String path;
 
@@ -35,10 +35,12 @@ class _AudioFileState extends State<AudioFile> {
   @override
   void initState() {
     super.initState();
-    this.widget.advancedPlayer.onDurationChanged.listen((Duration d) {
+    this.widget.advancedPlayer.onDurationChanged.listen((d) {
       //get the duration of audio
-      da = d.inSeconds;
-      setState(() {});
+      setState(() {
+        seconds = d.inSeconds;
+        _duration = d;
+      });
     });
     this.widget.advancedPlayer.onAudioPositionChanged.listen((p) {
       setState(() {
@@ -96,20 +98,26 @@ class _AudioFileState extends State<AudioFile> {
       ),
       color: Colors.black,
       onPressed: () {
-        this.widget.advancedPlayer.setPlaybackRate(1.5);
+        setState(() {
+          if (speed < 2) speed += 0.5;
+        });
+        this.widget.advancedPlayer.setPlaybackRate(speed);
       },
     );
   }
 
   Widget btnSlow() {
     return IconButton(
-      icon: ImageIcon(
+      icon: const ImageIcon(
         AssetImage('./images/next.png'),
         size: 10,
         color: Colors.blue,
       ),
       onPressed: () {
-        this.widget.advancedPlayer.setPlaybackRate(0.5);
+        setState(() {
+          if (speed > 0.5) speed -= 0.5;
+        });
+        this.widget.advancedPlayer.setPlaybackRate(speed);
       },
     );
   }
@@ -156,16 +164,11 @@ class _AudioFileState extends State<AudioFile> {
       max: _duration.inSeconds.toDouble(),
       onChanged: (double value) {
         setState(() {
-          changeToSecond(value.toInt());
+          this.widget.advancedPlayer.seek(Duration(seconds: value.toInt()));
           value = value;
         });
       },
     );
-  }
-
-  void changeToSecond(int second) {
-    Duration newDu = Duration(seconds: second);
-    this.widget.advancedPlayer.seek(newDu);
   }
 
   Widget loadAsset() {
@@ -199,7 +202,7 @@ class _AudioFileState extends State<AudioFile> {
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    da.toString(),
+                    seconds.toString(),
                     style: TextStyle(fontSize: 16),
                   )
                 ],

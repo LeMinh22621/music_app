@@ -19,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   List populars = [];
+  List trends = [];
   List album = [];
   late TabController _tabController;
   late ScrollController _scrollController;
@@ -27,6 +28,14 @@ class _HomeScreenState extends State<HomeScreen>
     await (MediaViewModel().loadAllSong()).then((value) {
       setState(() {
         populars = value;
+      });
+    });
+  }
+
+  ReadTrend() async {
+    await (MediaViewModel().loadTrend()).then((value) {
+      setState(() {
+        trends = value;
       });
     });
   }
@@ -49,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen>
     _scrollController = ScrollController();
 
     ReadPopular();
+    ReadTrend();
     ReadBooks();
   }
 
@@ -80,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen>
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DetailAudioPage(populars[i]),
+                builder: (context) => DetailAudioPage(listSongs[i]),
               ),
             );
           },
@@ -124,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          populars[i].title!,
+                          listSongs[i].title!,
                           style: const TextStyle(
                             fontSize: 16,
                             fontFamily: "Avenir",
@@ -132,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                         Text(
-                          populars[i].artist!,
+                          listSongs[i].artist!,
                           style: TextStyle(
                             fontSize: 14,
                             fontFamily: "Avenir",
@@ -276,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen>
                     children: [
                       _buildListView(populars),
                       _buildListView(populars),
-                      _buildListView(populars),
+                      _buildListView(trends),
                     ],
                   ),
                 ),
