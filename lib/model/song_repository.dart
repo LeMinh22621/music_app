@@ -5,7 +5,7 @@ import 'package:music_app/model/song.dart';
 class SongRespository {
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  static Future<List<Song>> getAllSong() async {
+  static Future<List<Song>> getAllSong() async { //Lay tat cac du lieu tren firebase
     var collection = FirebaseFirestore.instance.collection('music');
     var querySnapshot = await collection.get();
     List<Song> listSong = [];
@@ -17,7 +17,7 @@ class SongRespository {
     return listSong;
   }
 
-  static Future<List<Song>> getTrend() async {
+  static Future<List<Song>> getTrend() async { // Lay nhung bai nhac theo tren
     var collection = FirebaseFirestore.instance.collection('new2_music');
     var querySnapshot = await collection.get();
     List<Song> listSong = [];
