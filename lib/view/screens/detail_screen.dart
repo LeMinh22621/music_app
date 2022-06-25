@@ -1,19 +1,27 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:music_app/model/song.dart';
 import 'package:music_app/view/widgets/audio_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/view/widgets/app_colors.dart' as AppColors;
-import 'package:music_app/view/widgets/audio_bar.dart';
 
+// ignore: must_be_immutable
 class DetailAudioPage extends StatefulWidget {
-  const DetailAudioPage({Key? key}) : super(key: key);
+  late Song _song;
+
+  DetailAudioPage(Song song, {Key? key}) : super(key: key) {
+    this._song = song;
+  }
 
   @override
-  _DetailAudioPageState createState() => _DetailAudioPageState();
+  _DetailAudioPageState createState() => _DetailAudioPageState(song: _song);
 }
 
 class _DetailAudioPageState extends State<DetailAudioPage> {
-  AudioPlayer advancePlayer = AudioPlayer();
+  _DetailAudioPageState({required this.song});
+
+  final Song song;
+  late AudioPlayer advancePlayer;
 
   @override
   void initState() {
@@ -52,14 +60,6 @@ class _DetailAudioPageState extends State<DetailAudioPage> {
                     Navigator.pop(context);
                   },
                 ),
-                actions: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.search,
-                    ),
-                    onPressed: () {},
-                  )
-                ],
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
               )),
@@ -78,18 +78,21 @@ class _DetailAudioPageState extends State<DetailAudioPage> {
                   SizedBox(
                     height: screenHeight * 0.1,
                   ),
-                  const Text(
-                    "The Song",
-                    style: TextStyle(
+                  Text(
+                    song.title!,
+                    style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Avenir'),
                   ),
-                  const Text(
-                    'data',
-                    style: TextStyle(fontSize: 20),
+                  Text(
+                    song.artist!,
+                    style: const TextStyle(fontSize: 20),
                   ),
-                  AudioFile(advancedPlayer: advancePlayer),
+                  AudioFile(
+                    advancedPlayer: advancePlayer,
+                    path: song.music_file!,
+                  ),
                 ],
               ),
             ),
@@ -112,8 +115,8 @@ class _DetailAudioPageState extends State<DetailAudioPage> {
                     //borderRadius: BorderRadius.circular(20),
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white, width: 2),
-                    image: const DecorationImage(
-                        image: AssetImage('images/mtp.jpg'), fit: BoxFit.cover),
+                    image: DecorationImage(
+                        image: NetworkImage(song.img!), fit: BoxFit.cover),
                   ),
                 ),
               ),
