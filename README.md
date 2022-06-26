@@ -38,4 +38,5 @@ App features:
   1. Display List's Song by with topic.
   2. Click a song on list to go to detail song page.
   3. Can be pause and play music.
-  4. Can be fast or low speed song.
+  4. Can be played faster or lower speed song.
+  5. The slider can be repositioned.
