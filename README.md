@@ -31,12 +31,3 @@ b. DETAIL PLAY MUSIC:
 
 
    ![image](https://user-images.githubusercontent.com/79785621/175820123-867326b8-664b-40f9-9ed5-23d0c619b14a.png)
-
-3. Description:
-This is a MVP our app's. The app get the song's list on firebase and display then you can be listen
-App features:
-  1. Display List's Song by with topic.
-  2. Click a song on list to go to detail song page.
-  3. Can be pause and play music.
-  4. Can be played faster or lower speed song.
-  5. The slider can be repositioned.
