@@ -13,11 +13,15 @@ class MediaViewModel with ChangeNotifier {
 
   List<Song> get getCurrentList => _currentList;
 
-  Future<List<Song>> loadAllSong() async {
-    return await SongRespository.getAllSong();
+  Future<List<Song>> loadPopular() async {
+    return await SongRespository.getPopular();
   }
 
   Future<List<Song>> loadTrend() async {
     return await SongRespository.getTrend();
+  }
+
+  Future<List<Song>> loadNew() async {
+    return await SongRespository.getNew();
   }
 }

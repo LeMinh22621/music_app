@@ -20,27 +20,27 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   List populars = [];
   List trends = [];
+  List news = [];
   List album = [];
   late TabController _tabController;
   late ScrollController _scrollController;
 
-  ReadPopular() async {
-    await (MediaViewModel().loadAllSong()).then((value) {
-      setState(() {
-        populars = value;
-      });
-    });
-  }
-
-  ReadTrend() async {
+  loadFromFirebase() async {
     await (MediaViewModel().loadTrend()).then((value) {
       setState(() {
         trends = value;
       });
     });
-  }
-
-  ReadBooks() async {
+    await (MediaViewModel().loadPopular()).then((value) {
+      setState(() {
+        populars = value;
+      });
+    });
+    await (MediaViewModel().loadNew()).then((value) {
+      setState(() {
+        news = value;
+      });
+    });
     await DefaultAssetBundle.of(context)
         .loadString("json/album.json")
         .then((s) {
@@ -57,9 +57,7 @@ class _HomeScreenState extends State<HomeScreen>
     _tabController = TabController(length: 3, vsync: this);
     _scrollController = ScrollController();
 
-    ReadPopular();
-    ReadTrend();
-    ReadBooks();
+    loadFromFirebase();
   }
 
   Widget _buildPopularPageView() {
@@ -284,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen>
                   body: TabBarView(
                     controller: _tabController,
                     children: [
-                      _buildListView(populars),
+                      _buildListView(news),
                       _buildListView(populars),
                       _buildListView(trends),
                     ],
