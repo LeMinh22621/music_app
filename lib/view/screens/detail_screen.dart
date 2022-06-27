@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:music_app/model/song.dart';
 import 'package:music_app/view/widgets/audio_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -116,7 +117,7 @@ class _DetailAudioPageState extends State<DetailAudioPage> {
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white, width: 2),
                     image: DecorationImage(
-                      image: NetworkImage(song.img!),
+                      image: CachedNetworkImageProvider(song.img!),
                       fit: BoxFit.cover,
                     ),
                   ),

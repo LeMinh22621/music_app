@@ -22,14 +22,17 @@ class _AudioFileState extends State<AudioFile> {
   bool isPlaying = false;
   bool isPaused = false;
   bool isRepeat = false;
-  Color color = Colors.black;
+  Color color_repeat = Colors.black;
+  Color color_left = Colors.black;
+  Color color_right = Colors.black;
   final List<IconData> _icons = [
     Icons.play_circle_fill,
     Icons.pause_circle_filled,
-    Icons.fast_forward,
+    Icons.keyboard_double_arrow_right_rounded,
     Icons.slow_motion_video,
     Icons.repeat,
     Icons.shuffle,
+    Icons.keyboard_double_arrow_left_rounded
   ];
 
   @override
@@ -96,10 +99,12 @@ class _AudioFileState extends State<AudioFile> {
         _icons[2],
         size: 25,
       ),
-      color: Colors.black,
+      color: color_right,
       onPressed: () {
         setState(() {
-          if (speed < 2) speed += 0.5;
+          if (speed < 1.5) speed += 0.5;
+          color_right = (speed > 1) ? Colors.blue : Colors.black;
+          color_left = (speed < 1) ? Colors.blue : Colors.black;
         });
         this.widget.advancedPlayer.setPlaybackRate(speed);
       },
@@ -108,14 +113,16 @@ class _AudioFileState extends State<AudioFile> {
 
   Widget btnSlow() {
     return IconButton(
-      icon: const ImageIcon(
-        AssetImage('./images/next.png'),
-        size: 10,
-        color: Colors.blue,
+      icon: Icon(
+        _icons[6],
+        size: 25,
       ),
+      color: color_left,
       onPressed: () {
         setState(() {
           if (speed > 0.5) speed -= 0.5;
+          color_left = (speed < 1) ? Colors.blue : Colors.black;
+          color_right = (speed > 1) ? Colors.blue : Colors.black;
         });
         this.widget.advancedPlayer.setPlaybackRate(speed);
       },
@@ -126,19 +133,19 @@ class _AudioFileState extends State<AudioFile> {
     return IconButton(
       padding: const EdgeInsets.only(bottom: 10),
       icon: Icon(_icons[4], size: 15),
-      color: color,
+      color: color_repeat,
       onPressed: () {
         if (isRepeat == false) {
           this.widget.advancedPlayer.setReleaseMode(ReleaseMode.LOOP);
           setState(() {
             isRepeat = true;
-            color = Colors.blue;
+            color_repeat = Colors.blue;
           });
         } else if (isRepeat == true) {
           this.widget.advancedPlayer.setReleaseMode(ReleaseMode.RELEASE);
           setState(() {
             isRepeat = false;
-            color = Colors.black;
+            color_repeat = Colors.black;
           });
         }
       },
@@ -199,11 +206,11 @@ class _AudioFileState extends State<AudioFile> {
                 children: [
                   Text(
                     _position.toString().split(".")[0],
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    seconds.toString(),
-                    style: TextStyle(fontSize: 16),
+                    _duration.toString().split(".")[0],
+                    style: const TextStyle(fontSize: 16),
                   )
                 ],
               )),

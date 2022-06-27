@@ -3,10 +3,19 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:music_app/model/song.dart';
 
 class SongRespository {
-  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  static FirebaseFirestore? _firebaseFirestore = null;
+  static SongRespository? _instance = null;
 
-  static Future<List<Song>> getPopular() async {
-    var collection = FirebaseFirestore.instance.collection('music');
+  static SongRespository getInstance() {
+    if (_instance == null) {
+      _instance = new SongRespository();
+      _firebaseFirestore = FirebaseFirestore.instance;
+    }
+    return _instance!;
+  }
+
+  Future<List<Song>> getPopular() async {
+    var collection = _firebaseFirestore!.collection('music');
     var querySnapshot = await collection.get();
     List<Song> listSong = [];
     for (var queryDocumentSnapShot in querySnapshot.docs) {
@@ -17,8 +26,8 @@ class SongRespository {
     return listSong;
   }
 
-  static Future<List<Song>> getTrend() async {
-    var collection = FirebaseFirestore.instance.collection('new_music');
+  Future<List<Song>> getTrend() async {
+    var collection = _firebaseFirestore!.collection('new_music');
     var querySnapshot = await collection.get();
     List<Song> listSong = [];
     for (var queryDocumentSnapShot in querySnapshot.docs) {
@@ -29,8 +38,8 @@ class SongRespository {
     return listSong;
   }
 
-  static Future<List<Song>> getNew() async {
-    var collection = FirebaseFirestore.instance.collection('new2_music');
+  Future<List<Song>> getNew() async {
+    var collection = _firebaseFirestore!.collection('new2_music');
     var querySnapshot = await collection.get();
     List<Song> listSong = [];
     for (var queryDocumentSnapShot in querySnapshot.docs) {

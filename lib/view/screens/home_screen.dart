@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen>
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
-                          image: NetworkImage(listSongs[i].img!),
+                          image: CachedNetworkImageProvider(listSongs[i].img!),
                           fit: BoxFit.fill,
                         ),
                       ),
